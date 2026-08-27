@@ -528,6 +528,20 @@ model profiles {
   @@schema("public")
 }
 
+model projects {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String   @db.Uuid
+  name        String
+  description String?
+  status      String   @default("Draft")
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id])
+  @@index([created_at(sort: Desc)])
+  @@schema("public")
+}
+
 enum aal_level {
   aal1
   aal2
@@ -596,17 +610,4 @@ enum one_time_token_type {
   phone_change_token
 
   @@schema("auth")
-}
-model projects {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id     String   @db.Uuid
-  name        String
-  description String?
-  status      String   @default("Draft")
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime @default(now()) @db.Timestamptz(6)
-
-  @@index([user_id])
-  @@index([created_at(sort: Desc)])
-  @@schema("public")
 }
